@@ -49,6 +49,10 @@ class App extends Component {
           oldMessages.push(newMessage);
           const newID = this.state.currentId + 1;
 
+          const {id, username, content} = newMessage;
+
+          this.socket.send(JSON.stringify({username, content}));
+
           this.setState({messages: [...oldMessages], currentId: newID, currentText: ''})
       }
 
@@ -56,6 +60,13 @@ class App extends Component {
 
     componentDidMount() {
       console.log("componentDidMount <App />");
+
+      this.socket = new WebSocket("ws://localhost:3001")
+
+      this.socket.onopen = function (event) {
+        console.log("connected to socket")
+
+      }
       setTimeout(() => {
         console.log("Simulating incoming message");
         // Add a new message to the list of messages in the data store
