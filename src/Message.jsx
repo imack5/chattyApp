@@ -5,11 +5,8 @@ class Message extends Component {
     return (
       <div>
         <div className="message">
-          <span className="message-username">Anonymous1</span>
-          <span className="message-content">I won't be impressed with technology until I can download food.</span>
-        </div>
-        <div className="message system">
-          Anonymous1 changed their name to nomnom.
+          <span className="message-username">{this.props.user}</span>
+          <span className="message-content">{this.props.text}</span>
         </div>
       </div>
     )
