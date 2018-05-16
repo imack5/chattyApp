@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
 import NavBar from "./NavBar.jsx";
 import MessageList from "./MessageList.jsx";
+import Example from "./Example.jsx";
+import Modal from 'react-bootstrap/lib/Modal'
 
 class App extends Component {
   constructor(props) {
@@ -64,7 +66,7 @@ class App extends Component {
   componentDidMount() {
     console.log("componentDidMount <App />");
 
-    this.socket = new WebSocket("ws://172.46.2.228:3001");
+    this.socket = new WebSocket("ws://localhost:3001");
 
     const newMessage = {
       type: "userJoin",
@@ -96,6 +98,7 @@ class App extends Component {
   render() {
     return (
       <div onKeyPress={this._handleEnter}>
+        <Example />
         <NavBar usersConnected={this.state.usersConnected} />
         <MessageList messages={this.state.messages} />
         <Chatbar
