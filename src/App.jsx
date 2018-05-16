@@ -14,18 +14,8 @@ class App extends Component {
           currentId: 4,
           currentText: '',
            // optional. if currentUser is not defined, it means the user is Anonymous
-          messages: [
-            {
-              id: 1,
-              username: "Bob",
-              content: "Has anyone seen my marbles?",
-            },
-            {
-              id: 2,
-              username: "Anonymous",
-              content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-            }
-          ]}
+          messages: []
+        }
 
     }
 
@@ -40,33 +30,57 @@ class App extends Component {
 
       if(ev.key === 'Enter'){
          const newMessage = {
-            id: this.state.currentId.toString(),
             username: this.state.currentUser.name,
             content: this.state.currentText
           }
 
-          const oldMessages = this.state.messages;
-          oldMessages.push(newMessage);
-          const newID = this.state.currentId + 1;
-
-          const {id, username, content} = newMessage;
+          console.log("enter was pressed")
+          const {username, content} = newMessage;
 
           this.socket.send(JSON.stringify({username, content}));
 
-          this.setState({messages: [...oldMessages], currentId: newID, currentText: ''})
+          this.setState({ currentText: ''})
       }
 
     }
 
+  //   componentDidMount(){
+  //   // this is an "echo" websocket service
+  //   this.connection = new WebSocket('wss://echo.websocket.org');
+  //   // listen to onmessage event
+  //   this.connection.onmessage = evt => {
+  //     // add the new message to state
+  //     this.setState({
+  //       messages : this.state.messages.concat([ evt.data ])
+  //     })
+  //   };
+
+  //   // for testing purposes: sending to the echo service which will send it back back
+  //   setInterval( _ =>{
+  //     this.connection.send( Math.random() )
+  //   }, 2000 )
+  // },
+
+
     componentDidMount() {
       console.log("componentDidMount <App />");
 
-      this.socket = new WebSocket("ws://localhost:3001")
+      this.socket = new WebSocket("ws://localhost:3001");
 
       this.socket.onopen = function (event) {
-        console.log("connected to socket")
+        //this.socket.send("Hello");
+        console.log("connected to socket", event)
+      }
+
+      this.socket.onmessage = (event) => {
+
+        console.log("event", event)
+        const newMessages = this.state.messages.concat([JSON.parse(event.data)]);
+        console.log("New messages", newMessages)
+        this.setState({messages: newMessages})
 
       }
+
       setTimeout(() => {
         console.log("Simulating incoming message");
         // Add a new message to the list of messages in the data store
@@ -76,6 +90,8 @@ class App extends Component {
         // Calling setState will trigger a call to render() in App and all child components.
         this.setState({messages: messages})
       }, 3000);
+
+
     }
 
   render() {
