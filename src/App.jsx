@@ -8,10 +8,12 @@ class App extends Component {
     super(props);
 
     this.state = {
+      userColour: "",
       currentUser: { name: "Bob" },
       prevUser: { name: "Bob" },
       currentId: 4,
       currentText: "",
+      usersConnected: "0",
       // optional. if currentUser is not defined, it means the user is Anonymous
       messages: []
     };
@@ -38,7 +40,7 @@ class App extends Component {
         const newNotification = {
           type: "postNotification",
           content: `${prevUser} changed their name to ${currentUser}`
-        }
+        };
         this.socket.send(JSON.stringify(newNotification));
       }
 
@@ -47,49 +49,46 @@ class App extends Component {
       const newMessage = {
         type: "postMessage",
         username: this.state.currentUser.name,
-        content: this.state.currentText
+        content: this.state.currentText,
+        colour: this.state.userColour
       };
 
       console.log("enter was pressed");
 
-      this.socket.send(JSON.stringify( newMessage));
+      this.socket.send(JSON.stringify(newMessage));
 
       this.setState({ currentText: "" });
     }
   };
-
-  //   componentDidMount(){
-  //   // this is an "echo" websocket service
-  //   this.connection = new WebSocket('wss://echo.websocket.org');
-  //   // listen to onmessage event
-  //   this.connection.onmessage = evt => {
-  //     // add the new message to state
-  //     this.setState({
-  //       messages : this.state.messages.concat([ evt.data ])
-  //     })
-  //   };
-
-  //   // for testing purposes: sending to the echo service which will send it back back
-  //   setInterval( _ =>{
-  //     this.connection.send( Math.random() )
-  //   }, 2000 )
-  // },
 
   componentDidMount() {
     console.log("componentDidMount <App />");
 
     this.socket = new WebSocket("ws://172.46.2.228:3001");
 
+    const newMessage = {
+      type: "userJoin",
+      content: `${this.state.currentUser.name} joined the chat!`
+    };
+
     this.socket.onopen = function(event) {
-      //this.socket.send("Hello");
-      console.log("connected to socket", event);
+      this.send(JSON.stringify(newMessage));
+      //this.console.log("connected to socket", event);
     };
 
     this.socket.onmessage = event => {
+      const incomingMessage = JSON.parse(event.data);
+      const newMessages = this.state.messages.concat([incomingMessage]);
 
+      if (incomingMessage.type === "colourSet"){
+        console.log("set Colour woooo")
+        this.setState({userColour: incomingMessage.colour})
+        console.log(incomingMessage)
+      }
 
-      const newMessages = this.state.messages.concat([JSON.parse(event.data)]);
-      console.log(newMessages)
+      if (incomingMessage.type === "userJoin") {
+        this.setState({ usersConnected: incomingMessage.size });
+      }
       this.setState({ messages: newMessages });
     };
   }
@@ -97,7 +96,7 @@ class App extends Component {
   render() {
     return (
       <div onKeyPress={this._handleEnter}>
-        <NavBar />
+        <NavBar usersConnected={this.state.usersConnected} />
         <MessageList messages={this.state.messages} />
         <Chatbar
           currentUser={this.state.currentUser}

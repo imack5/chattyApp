@@ -3,12 +3,12 @@ h1 {
 }
 
 body {
-      background: white;
-      color: black;
-      font-family: 'Open Sans', sans-serif;
-      font-size: 14px;
-      margin: 70px 0;
-    }
+  background: white;
+  color: black;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  margin: 70px 0;
+}
 
 .chatbar {
   background: tomato;
@@ -86,4 +86,8 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.navbar-counter {
+  float: right;
 }
