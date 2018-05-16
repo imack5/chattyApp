@@ -9,8 +9,8 @@ class App extends Component {
 
     this.state = {
       userColour: "",
-      currentUser: { name: "Bob" },
-      prevUser: { name: "Bob" },
+      currentUser: { name: "" },
+      prevUser: { name: "" },
       currentId: 4,
       currentText: "",
       usersConnected: "0",
