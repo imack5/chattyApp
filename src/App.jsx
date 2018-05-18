@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
-import NavBar from "./NavBar.jsx";
+import MyNavBar from "./NavBar.jsx";
 import MessageList from "./MessageList.jsx";
 import Example from "./Example.jsx";
-import Modal from 'react-bootstrap/lib/Modal'
+import Modal from "react-bootstrap/lib/Modal";
+import fetch from "node-fetch";
+import querystring from "querystring";
 
 class App extends Component {
   constructor(props) {
@@ -11,6 +13,7 @@ class App extends Component {
 
     this.state = {
       userColour: "",
+      tempUser: { name: "" },
       currentUser: { name: "" },
       prevUser: { name: "" },
       currentId: 4,
@@ -20,6 +23,16 @@ class App extends Component {
       messages: []
     };
   }
+  _handleEdit = ev => {
+    const name = ev.target.value;
+    this.setState({ tempUser: { name: name } });
+  };
+
+  _handleNameSubmit = ev => {
+    const name = this.state.tempUser.name;
+    this.setState({ currentUser: { name: name }, prevUser: { name: name } });
+    this.socket = new WebSocket("ws://localhost:3001");
+  };
 
   _handleContentInput = ev => {
     const user = this.state.currentUser.name;
@@ -57,49 +70,92 @@ class App extends Component {
 
       console.log("enter was pressed");
 
-      this.socket.send(JSON.stringify(newMessage));
+      let giphyRegEx = /\\giphy\s(\w+)\b/;
+      const giphySearch = (newMessage.content || "").match(giphyRegEx);
 
-      this.setState({ currentText: "" });
+      if (giphySearch !== null) {
+        console.log("whoah it matched", giphySearch);
+
+        let qs = querystring.stringify({
+          api_key: "ZVGiSiaCDQLOljWqYDof16sq6Gy6xSXY",
+          tag: giphySearch[1]
+        });
+
+        fetch(`https://api.giphy.com/v1/gifs/random?${qs}`)
+          .then(response => {
+            console.log(response);
+            return response.json();
+          })
+          .then(json => {
+            console.log(json);
+            let newGiphy = [
+              <img className="picture" src={json.data.image_url} />
+            ];
+            console.log("newMessage", newMessage.content, giphySearch[0]);
+            console.log(newMessage.content == `${giphySearch[0]}`);
+            let newString = newMessage.content.replace(
+              `${giphySearch[0]}`,
+              `${json.data.image_url}`
+            );
+            newMessage.content = newString;
+
+            console.log("newMessage", newMessage, newString);
+          })
+          .then(() => {
+            this.socket.send(JSON.stringify(newMessage));
+            console.log("sending message");
+            this.setState({ currentText: "" });
+          });
+      } else {
+        this.socket.send(JSON.stringify(newMessage));
+        console.log("sending message");
+        this.setState({ currentText: "" });
+      }
     }
   };
 
-  componentDidMount() {
-    console.log("componentDidMount <App />");
+  componentDidUpdate(){
+    if (this.socket) {
+      console.log("componentDidMount <App />");
 
-    this.socket = new WebSocket("ws://localhost:3001");
+      const newMessage = {
+        type: "userJoin",
+        content: `${this.state.currentUser.name} joined the chat!`
+      };
 
-    const newMessage = {
-      type: "userJoin",
-      content: `${this.state.currentUser.name} joined the chat!`
-    };
+      this.socket.onopen = function(event) {
+        this.send(JSON.stringify(newMessage));
+        //this.console.log("connected to socket", event);
+      };
 
-    this.socket.onopen = function(event) {
-      this.send(JSON.stringify(newMessage));
-      //this.console.log("connected to socket", event);
-    };
+      this.socket.onmessage = event => {
+        const incomingMessage = JSON.parse(event.data);
+        const newMessages = this.state.messages.concat([incomingMessage]);
 
-    this.socket.onmessage = event => {
-      const incomingMessage = JSON.parse(event.data);
-      const newMessages = this.state.messages.concat([incomingMessage]);
+        if (incomingMessage.type === "colourSet") {
+          console.log("set Colour woooo");
+          this.setState({ userColour: incomingMessage.colour });
+          console.log(incomingMessage);
+        }
 
-      if (incomingMessage.type === "colourSet"){
-        console.log("set Colour woooo")
-        this.setState({userColour: incomingMessage.colour})
-        console.log(incomingMessage)
-      }
+        if (incomingMessage.type === "userJoin") {
+          this.setState({ usersConnected: incomingMessage.size });
+        }
+        this.setState({ messages: newMessages });
+      };
+    }
 
-      if (incomingMessage.type === "userJoin") {
-        this.setState({ usersConnected: incomingMessage.size });
-      }
-      this.setState({ messages: newMessages });
-    };
+
   }
 
   render() {
     return (
       <div onKeyPress={this._handleEnter}>
-        <Example />
-        <NavBar usersConnected={this.state.usersConnected} />
+        <Example
+          handleSubmit={this._handleNameSubmit}
+          handleEdit={this._handleEdit}
+        />
+        <MyNavBar usersConnected={this.state.usersConnected} />
         <MessageList messages={this.state.messages} />
         <Chatbar
           currentUser={this.state.currentUser}
@@ -111,4 +167,5 @@ class App extends Component {
     );
   }
 }
+
 export default App;

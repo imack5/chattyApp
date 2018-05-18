@@ -1,21 +1,45 @@
 import React, { Component } from "react";
+import fetch from "node-fetch";
+import querystring from "querystring";
 
 class Message extends Component {
+
+  constructor(){
+    super();
+
+    this.state = {
+      messageContent: "",
+      picContent: []
+    }
+  }
+
+  componentWillMount(){
+    let picRegEx = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
+
+    let imageURL = "";
+
+    this.setState({messageContent: this.props.text});
+
+    const picLink = (this.props.text || "").match(picRegEx);
+
+
+    if (picLink !== null) {
+      let urlImages = picLink.map(imageLink => {
+        imageURL = <img className="picture" onLoad={this.props.handleLoad} src={imageLink} />;
+        this.setState({messageContent: this.state.messageContent.replace(imageLink, "")});
+        return imageURL;
+      });
+
+      this.setState({picContent: this.state.picContent.concat(urlImages)});
+    }
+
+  }
   render() {
     let usernameStyle = {
       color: this.props.colour
     };
 
-    const linkParser = /\bhttps?\S*/;
-    let imageURL = "";
-    let messageContent = this.props.text;
 
-    const picLink = linkParser.exec(this.props.text);
-
-    if (picLink !== null) {
-      imageURL = <img className="picture" src={picLink[0]} />;
-      messageContent = messageContent.replace(picLink[0], "");
-    }
 
     if (this.props.type === "incomingMessage") {
       return (
@@ -25,8 +49,8 @@ class Message extends Component {
               {this.props.user}
             </span>
             <span className="message-content">
-              {messageContent}
-              {imageURL}
+              {this.state.messageContent}
+              {this.state.picContent}
             </span>
           </div>
         </div>
@@ -34,7 +58,7 @@ class Message extends Component {
     } else {
       return (
         <div className="notification">
-          <span className="notification-content">{messageContent}</span>
+          <span className="notification-content">{this.state.messageContent}</span>
         </div>
       );
     }

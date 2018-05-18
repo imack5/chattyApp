@@ -1,16 +1,25 @@
 import React, { Component } from "react";
+import Navbar from "react-bootstrap/lib/Navbar";
 
-class NavBar extends Component {
+class MyNavBar extends Component {
   render() {
     return (
-      <nav className="navbar">
-        <a href="/" className="navbar-brand">
-          Chatty
-        </a>
-        <div className="navbar-counter"> Users Connected: {this.props.usersConnected} </div>
-      </nav>
+
+      <Navbar className="navbar">
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="/">Chatty</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Navbar.Text pullRight className="navbar-counter">
+           Users Connected: {this.props.usersConnected}
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
 
-export default NavBar;
+export default MyNavBar;
