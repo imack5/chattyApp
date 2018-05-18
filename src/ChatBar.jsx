@@ -1,6 +1,28 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 class Chatbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      intialFocus: false,
+      messageComponent: ""
+    };
+  }
+
+  focusInput() {
+    if (this.state.messageComponent) {
+      ReactDOM.findDOMNode(this.state.messageComponent).focus();
+    }
+  }
+
+  _setMessageComponent = component => {
+    if (component) {
+      this.setState({ messageComponent: component });
+    }
+  };
+
   render() {
     return (
       <footer className="chatbar">
@@ -15,6 +37,7 @@ class Chatbar extends Component {
           onChange={this.props.handleContentInput}
           value={this.props.currentText}
           placeholder="Type a message and hit ENTER"
+          ref={this._setMessageComponent}
         />
       </footer>
     );

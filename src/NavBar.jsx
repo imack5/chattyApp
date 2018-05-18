@@ -4,17 +4,18 @@ import Navbar from "react-bootstrap/lib/Navbar";
 class MyNavBar extends Component {
   render() {
     return (
-
       <Navbar className="navbar">
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="/">Chatty</a>
+            <div style={{ color: "white" }}>Chatty</div>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Navbar.Text pullRight className="navbar-counter">
-           Users Connected: {this.props.usersConnected}
+            <div style={{ color: "white" }}>
+              Users Connected: {this.props.usersConnected}
+            </div>
           </Navbar.Text>
         </Navbar.Collapse>
       </Navbar>

@@ -1,7 +1,3 @@
 // This is the top-level scss file. Import all other files in here.
-//@import ;
-//@import "~bootstrap/dist/css/bootstrap.css";
-
-@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css');
-
-@import 'home';
+@import "home";
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css");

@@ -4,6 +4,7 @@ import FormGroup from "react-bootstrap/lib/FormGroup";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import HelpBlock from "react-bootstrap/lib/HelpBlock";
 import Button from "react-bootstrap/lib/Button";
+import ReactDOM from "react-dom";
 
 class MyForm extends Component {
   constructor(props, context) {
@@ -14,6 +15,12 @@ class MyForm extends Component {
     this.state = {
       value: ""
     };
+  }
+
+  focusInput(component) {
+    if (component) {
+      ReactDOM.findDOMNode(component).focus();
+    }
   }
 
   getValidationState() {
@@ -40,9 +47,8 @@ class MyForm extends Component {
             type="text"
             value={this.state.value}
             placeholder="Enter text"
-            onChange={
-              this.handleChange
-          }
+            onChange={this.handleChange}
+            ref={this.focusInput}
           />
           <FormControl.Feedback />
           <HelpBlock>Username must atleast 3 characters long</HelpBlock>

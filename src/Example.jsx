@@ -4,7 +4,7 @@ import Popover from "react-bootstrap/lib/Popover";
 import Tooltip from "react-bootstrap/lib/Tooltip";
 import Button from "react-bootstrap/lib/Button";
 import OverlayTrigger from "react-bootstrap/lib/OverlayTrigger";
-import MyForm  from "./MyForm.jsx";
+import MyForm from "./MyForm.jsx";
 
 class Example extends Component {
   constructor(props, context) {
@@ -23,6 +23,13 @@ class Example extends Component {
     this.props.handleSubmit();
   }
 
+  _handleEnterPress = ev => {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      this.handleClose();
+    }
+  };
+
   handleShow() {
     this.setState({ show: true });
   }
@@ -38,8 +45,8 @@ class Example extends Component {
 
     return (
       <div>
-        <Modal show={this.state.show}>
-          <MyForm handleEdit={this.props.handleEdit}/>
+        <Modal onKeyPress={this._handleEnterPress} show={this.state.show}>
+          <MyForm handleEdit={this.props.handleEdit} />
           <Modal.Footer>
             <Button onClick={this.handleClose}>Submit</Button>
           </Modal.Footer>

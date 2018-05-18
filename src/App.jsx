@@ -19,10 +19,11 @@ class App extends Component {
       currentId: 4,
       currentText: "",
       usersConnected: "0",
-      // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      messages: [],
+      navBarStyle: { color: "black" }
     };
   }
+
   _handleEdit = ev => {
     const name = ev.target.value;
     this.setState({ tempUser: { name: name } });
@@ -31,6 +32,7 @@ class App extends Component {
   _handleNameSubmit = ev => {
     const name = this.state.tempUser.name;
     this.setState({ currentUser: { name: name }, prevUser: { name: name } });
+
     this.socket = new WebSocket("ws://localhost:3001");
   };
 
@@ -47,7 +49,7 @@ class App extends Component {
   };
 
   _handleEnter = ev => {
-    if (ev.key === "Enter") {
+    if (ev.key === "Enter" && this.state.currentText !== "") {
       const currentUser = this.state.currentUser.name;
       const prevUser = this.state.prevUser.name;
 
@@ -68,14 +70,10 @@ class App extends Component {
         colour: this.state.userColour
       };
 
-      console.log("enter was pressed");
-
       let giphyRegEx = /\\giphy\s(\w+)\b/;
       const giphySearch = (newMessage.content || "").match(giphyRegEx);
 
       if (giphySearch !== null) {
-        console.log("whoah it matched", giphySearch);
-
         let qs = querystring.stringify({
           api_key: "ZVGiSiaCDQLOljWqYDof16sq6Gy6xSXY",
           tag: giphySearch[1]
@@ -83,41 +81,34 @@ class App extends Component {
 
         fetch(`https://api.giphy.com/v1/gifs/random?${qs}`)
           .then(response => {
-            console.log(response);
             return response.json();
           })
           .then(json => {
-            console.log(json);
             let newGiphy = [
               <img className="picture" src={json.data.image_url} />
             ];
-            console.log("newMessage", newMessage.content, giphySearch[0]);
-            console.log(newMessage.content == `${giphySearch[0]}`);
+
             let newString = newMessage.content.replace(
               `${giphySearch[0]}`,
               `${json.data.image_url}`
             );
-            newMessage.content = newString;
 
-            console.log("newMessage", newMessage, newString);
+            newMessage.content = newString;
           })
           .then(() => {
             this.socket.send(JSON.stringify(newMessage));
-            console.log("sending message");
+
             this.setState({ currentText: "" });
           });
       } else {
         this.socket.send(JSON.stringify(newMessage));
-        console.log("sending message");
         this.setState({ currentText: "" });
       }
     }
   };
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     if (this.socket) {
-      console.log("componentDidMount <App />");
-
       const newMessage = {
         type: "userJoin",
         content: `${this.state.currentUser.name} joined the chat!`
@@ -125,7 +116,6 @@ class App extends Component {
 
       this.socket.onopen = function(event) {
         this.send(JSON.stringify(newMessage));
-        //this.console.log("connected to socket", event);
       };
 
       this.socket.onmessage = event => {
@@ -133,9 +123,7 @@ class App extends Component {
         const newMessages = this.state.messages.concat([incomingMessage]);
 
         if (incomingMessage.type === "colourSet") {
-          console.log("set Colour woooo");
           this.setState({ userColour: incomingMessage.colour });
-          console.log(incomingMessage);
         }
 
         if (incomingMessage.type === "userJoin") {
@@ -144,8 +132,6 @@ class App extends Component {
         this.setState({ messages: newMessages });
       };
     }
-
-
   }
 
   render() {
@@ -155,8 +141,14 @@ class App extends Component {
           handleSubmit={this._handleNameSubmit}
           handleEdit={this._handleEdit}
         />
-        <MyNavBar usersConnected={this.state.usersConnected} />
-        <MessageList messages={this.state.messages} />
+        <MyNavBar
+          style={{ color: "black" }}
+          usersConnected={this.state.usersConnected}
+        />
+        <MessageList
+          messages={this.state.messages}
+          currentUser={this.state.currentUser}
+        />
         <Chatbar
           currentUser={this.state.currentUser}
           currentText={this.state.currentText}
