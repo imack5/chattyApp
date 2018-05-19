@@ -11,7 +11,15 @@ A minimalitic chat app, with support to access the giphy.com API
 5. Navigate to localhost:3000 and start chatting!!
 
 ### Dependencies
-
+* babel-core
+* babel-loader
+* babel-preset-es2015
+* babel-preset-react
+* css-loader
+* node-sass
+* sass-loader
+* style-loader
+* webpack-dev-server
 * React
 * Webpack
 * react-bootstrap
