@@ -10,7 +10,34 @@ A minimalitic chat app, with support to access the giphy.com API
 4. 'cd' into 'chattyApp/ and run 'npm start' to start the Chatty server on localhost:3000
 5. Navigate to localhost:3000 and start chatting!!
 
-### Dependencies
+## Features
+### Giphy chatbot
+There is a very simple chat bot that will send a random giphy to the chat when any user sends the correct command. To activate the chat bot, type "\giphy" followed by a space and then a tag to filter the results. So for example: "\giphy pizza" would return a random pizza themed gif from Giphy.
+!["Screenshot of \giphy chatbot"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.16.10%20PM.png?raw=true)
+!["Result of the \giphy command"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.16.58%20PM.png?raw=true)
+
+### User Experience
+#### First arriving at the site
+!["First arriving at the site"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.04%20PM.png?raw=true)
+
+#### Username verification
+Shows error on too short of a username
+!["Shows error"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.28%20PM.png?raw=true)
+Shows success on a username of atleast 3 characters
+!["Shows success"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.21%20PM.png?raw=true)
+!["User joined"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.43%20PM.png)
+!["Shows conversations between two users"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.11.43%20PM.png?raw=true)
+!["User chats"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.14.32%20PM.png?raw=true)
+!["More user chats"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.14.17%20PM.png?raw=true)
+!["User change name"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.15.20%20PM.png?raw=true)
+!["Adding images to chat"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.17.46%20PM.png?raw=true)
+!["Result of adding image URL"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.18.00%20PM.png?raw=true)
+
+
+
+
+
+## Dependencies
 * babel-core
 * babel-loader
 * babel-preset-es2015
