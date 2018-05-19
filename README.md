@@ -11,7 +11,7 @@ A minimalitic chat app, with support to access the giphy.com API
 5. Navigate to localhost:3000 and start chatting!!
 
 ## Features
-### Giphy chatbot
+### Giphy Chatbot
 There is a very simple chat bot that will send a random giphy to the chat when any user sends the correct command. To activate the chat bot, type "\giphy" followed by a space and then a tag to filter the results. So for example: "\giphy pizza" would return a random pizza themed gif from Giphy.
 !["Screenshot of \giphy chatbot"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.16.10%20PM.png?raw=true)
 !["Result of the \giphy command"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.16.58%20PM.png?raw=true)
@@ -32,7 +32,7 @@ When a user first joins the chat their name is displayed and the "Users Online i
 !["User joined"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.43%20PM.png)
 
 #### Messaging with other users
-The chat appears differently depending on the user. The current user's messages show up on the right side of the screen and in a lighter blue, whereas the other users show up on the left side and in white.
+The chat appears differently depending on the user. The current user's messages show up on the right side of the screen and in a lighter green, whereas the other users show up on the left side and in white.
 !["Shows conversations between two users"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.11.43%20PM.png?raw=true)
 
 !["User chats"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.14.32%20PM.png?raw=true)
