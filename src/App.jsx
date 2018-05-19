@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
 import MyNavBar from "./NavBar.jsx";
 import MessageList from "./MessageList.jsx";
-import Example from "./Example.jsx";
+import MyModal from "./MyModal.jsx";
 import Modal from "react-bootstrap/lib/Modal";
 import fetch from "node-fetch";
 import querystring from "querystring";

@@ -21,17 +21,34 @@ There is a very simple chat bot that will send a random giphy to the chat when a
 !["First arriving at the site"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.04%20PM.png?raw=true)
 
 #### Username verification
-Shows error on too short of a username
+Shows error on too short of a username.
 !["Shows error"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.28%20PM.png?raw=true)
-Shows success on a username of atleast 3 characters
+
+Shows success on a username of atleast 3 characters.
 !["Shows success"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.21%20PM.png?raw=true)
+
+#### Joining the chat
+When a user first joins the chat their name is displayed and the "Users Online increases by 1"
 !["User joined"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%206.42.43%20PM.png)
+
+#### Messaging with other users
+The chat appears differently depending on the user. The current user's messages show up on the right side of the screen and in a lighter blue, whereas the other users show up on the left side and in white.
 !["Shows conversations between two users"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.11.43%20PM.png?raw=true)
+
 !["User chats"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.14.32%20PM.png?raw=true)
+
 !["More user chats"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.14.17%20PM.png?raw=true)
+
+#### User changing their name
+When a user changes their name, the app displays a notification
 !["User change name"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.15.20%20PM.png?raw=true)
+
+#### Adding images to the chat
+By having an image url anywhere in a message, you can display the image that it links to.
 !["Adding images to chat"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.17.46%20PM.png?raw=true)
+
 !["Result of adding image URL"](https://github.com/imack5/chattyApp/blob/master/docs/Screen%20Shot%202018-05-18%20at%207.18.00%20PM.png?raw=true)
+
 
 
 
