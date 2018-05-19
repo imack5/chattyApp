@@ -4,6 +4,7 @@ import querystring from "querystring";
 import Image from "react-bootstrap/lib/Image";
 import Panel from "react-bootstrap/lib/Panel";
 
+//Where the messages are stored
 class Message extends Component {
   constructor() {
     super();
@@ -33,7 +34,7 @@ class Message extends Component {
           />
         );
         this.setState({
-          messageContent: this.state.messageContent.replace(imageLink, "");
+          messageContent: this.state.messageContent.replace(imageLink, "")
         });
         return imageURL;
       });

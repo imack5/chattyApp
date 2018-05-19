@@ -11,12 +11,14 @@ class Chatbar extends Component {
     };
   }
 
+  //Focus input on chatbar
   focusInput() {
     if (this.state.messageComponent) {
       ReactDOM.findDOMNode(this.state.messageComponent).focus();
     }
   }
 
+  //Setting the state of the message component
   _setMessageComponent = component => {
     if (component) {
       this.setState({ messageComponent: component });

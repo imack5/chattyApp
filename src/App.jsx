@@ -1,3 +1,8 @@
+// Main source for mounting to the react DOM.
+// All components are mounted through here.
+
+
+
 import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
 import MyNavBar from "./NavBar.jsx";
@@ -24,35 +29,39 @@ class App extends Component {
     };
   }
 
+  //Handles Edits of the username
   _handleEdit = ev => {
     const name = ev.target.value;
     this.setState({ tempUser: { name: name } });
   };
 
+  //Handles submissions of the initial username
   _handleNameSubmit = ev => {
     const name = this.state.tempUser.name;
     this.setState({ currentUser: { name: name }, prevUser: { name: name } });
-
     this.socket = new WebSocket("ws://localhost:3001");
   };
 
+  //Handles input into the text field
   _handleContentInput = ev => {
-    const user = this.state.currentUser.name;
     const content = ev.target.value;
     this.setState({ currentText: content });
   };
 
+  //Handles input into the username field
   _handleNameInput = ev => {
     const user = this.state.currentUser.name;
     const name = ev.target.value;
     this.setState({ currentUser: { name: name } });
   };
 
+  //Handles when the enter button is pressed
   _handleEnter = ev => {
     if (ev.key === "Enter" && this.state.currentText !== "") {
       const currentUser = this.state.currentUser.name;
       const prevUser = this.state.prevUser.name;
 
+      //Check to see if the user is changed when message submitted
       if (currentUser !== prevUser) {
         const newNotification = {
           type: "postNotification",
@@ -70,6 +79,8 @@ class App extends Component {
         colour: this.state.userColour
       };
 
+      //Checks to see if the \giphy keyword is present in the message,
+      //and if so replace it with the image URL from the giphy API
       let giphyRegEx = /\\giphy\s(\w+)\b/;
       const giphySearch = (newMessage.content || "").match(giphyRegEx);
 
@@ -79,6 +90,7 @@ class App extends Component {
           tag: giphySearch[1]
         });
 
+        //GET request to Giphy API
         fetch(`https://api.giphy.com/v1/gifs/random?${qs}`)
           .then(response => {
             return response.json();
@@ -114,10 +126,12 @@ class App extends Component {
         content: `${this.state.currentUser.name} joined the chat!`
       };
 
+      //When a user joins, send notification to the chat
       this.socket.onopen = function(event) {
         this.send(JSON.stringify(newMessage));
       };
 
+      //On message from the server, send it to the chat
       this.socket.onmessage = event => {
         const incomingMessage = JSON.parse(event.data);
         const newMessages = this.state.messages.concat([incomingMessage]);
@@ -137,7 +151,7 @@ class App extends Component {
   render() {
     return (
       <div onKeyPress={this._handleEnter}>
-        <Example
+        <MyModal
           handleSubmit={this._handleNameSubmit}
           handleEdit={this._handleEdit}
         />
