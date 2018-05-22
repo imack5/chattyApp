@@ -1,8 +1,6 @@
 // Main source for mounting to the react DOM.
 // All components are mounted through here.
 
-
-
 import React, { Component } from "react";
 import Chatbar from "./ChatBar.jsx";
 import MyNavBar from "./NavBar.jsx";

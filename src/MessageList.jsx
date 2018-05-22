@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Message from "./Message.jsx";
+import uuidv4 from "uuid/v4";
 
 class MessageList extends Component {
   _scrollToImage(event) {
@@ -28,7 +29,7 @@ class MessageList extends Component {
     ));
 
     return (
-      <div>
+      <div key={uuidv4()}>
         <main className="messages">{sup}</main>
         <div
           style={{ float: "left", clear: "both" }}
